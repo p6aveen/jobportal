@@ -4,8 +4,9 @@ const mongoose = require('mongoose'); //bring mongoose
 
 const bodyParser = require('body-parser');
 
-const users = require('./routes/api/users');
+const passport = require('passport');
 
+const users = require('./routes/api/users');
 
 const profile = require('./routes/api/profile');
 
@@ -28,8 +29,14 @@ mongoose
     .connect(db,{ useNewUrlParser: true }) //passing db variable to connect function of mongoose
     .then(() => console.log('MongoDB Connected')) //.then() is called js promiss which is callback function
     .catch(err => console.log(err)); //catch function for catching error of the connection
+// Passport Middleware
+app.use(passport.initialize());
 
-app.get('/', (req,res) => res.send('home page')); //creating home route by calling express class get ,get request
+//Passport config
+
+require('./config/passport')(passport);
+
+//app.get('/', (req,res) => res.send('home page')); //creating home route by calling express class get ,get request
 
 app.use('/api/users', users); //app.use is used create route which points to sub dir files
 
